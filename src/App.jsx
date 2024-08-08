@@ -16,7 +16,7 @@ function App() {
       <h1>Carpooling application on the Blockchain</h1>
       <div className="card">
         <h1 className="text-3xl font-bold underline text-red-700">
-          Hello world!
+          Hello world! Carpool
         </h1>
        
       </div>
