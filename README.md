@@ -61,7 +61,7 @@ This project aims to create a secure, transparent, and decentralized carpooling 
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/your-username/decentralized-carpooling.git
+    git clone https://github.com/ValiantDoge/Web3Carpool.git  
     cd decentralized-carpooling
     ```
 
