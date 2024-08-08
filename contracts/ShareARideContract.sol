@@ -1,71 +1,155 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.5.11;
-import "./DataStore.sol";
 
 contract ShareARideContract {
-    mapping (uint => RegisteredUser) public registerUsersList;
-    mapping (uint => Ride) public rideList;
-    uint rideIndex;
-    uint userIndex;
-    uint rideKey;
-
-    constructor(){
-        rideIndex = 0;
-        userIndex = 0;
-        rideKey = 1;
+    struct Ride {
+        uint rideId;
+        address payable driver;
+        string origin;
+        string destination;
+        string departureDate;
+        uint256 departureTime;
+        uint256 seatLimit;
+        uint256 availableSeats;
+        uint256 pricePerSeat;
     }
 
-    function AddRide(address hashAddress, 
-                          string memory from, 
-                          string memory to, 
-                          string memory date, 
-                          string memory time, 
-                          uint amount, 
-                          uint passengerLimit, 
-                          string memory vehicleType
-                         ) public {
-        Ride memory ride = Ride(rideKey, hashAddress, from, to, date, time, amount, passengerLimit, 0, vehicleType, false, true, false);
-        rideList[rideIndex] = ride;
-        rideIndex++;
-        rideKey++;
+    // Ride[] public rides;
+    uint public ridesCount = 0;
+    mapping(uint => Ride) public rides;
+
+
+    // Ride Creation Event
+
+    event RideCreated(
+        uint rideId,
+        address payable driver,
+        string origin,
+        string destination,
+        string departureDate,
+        uint256 departureTime,
+        uint256 seatLimit,
+        uint256 availableSeats,
+        uint256 pricePerSeat
+    );
+
+    event RideRequested(
+        uint rideId,
+        address payable driver,
+        string origin,
+        string destination,
+        string departureDate,
+        uint departureTime,
+        uint seatLimit,
+        uint availableSeats,
+        uint pricePerSeat
+    );
+
+    function createRide(
+        string memory _origin,
+        string memory _destination,
+        string memory _departureDate,
+        uint _departureTime,
+        uint _seatLimit,
+        uint _availableSeats,
+        uint _pricePerSeat
+        ) public {
+
+        ridesCount ++;
+        rides[ridesCount] = Ride(
+            ridesCount,
+            msg.sender,
+            _origin,
+            _destination,
+            _departureDate,
+            _departureTime,
+            _seatLimit,
+            _availableSeats,
+            _pricePerSeat
+        );
+        
+        emit RideCreated(
+            ridesCount,
+            msg.sender,
+            _origin,
+            _destination,
+            _departureDate,
+            _departureTime,
+            _seatLimit,
+            _availableSeats,
+            _pricePerSeat
+        );
+
+
     }
 
-    function RegisterUserAccount(address hashAddress, 
-                                 string memory userName, 
-                                 string memory phoneNumber,
-                                 string memory email
-                                )  public{
-        RegisteredUser memory user = RegisteredUser(hashAddress, 0, userName, phoneNumber, email);
-        registerUsersList[userIndex] = user;
-        userIndex++;
+    function getRidesCount() public view returns (uint) {
+        // return rides.length;
+        return ridesCount;
     }
 
-    function searchView(uint rKey) public view returns(
-        string memory,
-        string memory,
-        string memory,
-        string memory,
-        uint,
-        uint,
-        uint,
-        string memory,
-        bool, bool, bool
-    ) {
-       uint searchIndex = rKey - 1; 
-       Ride memory ride = rideList[searchIndex];
+    function requestRide(uint _id)  public payable {
+        //Fetch RIde
+        Ride memory _ride = rides[_id];
+        //Check if ride is available
+        require(_ride.availableSeats > 0, "No available seats");
+        //Check if user is not the driver
+        require(msg.sender != _ride.driver, "You are the driver");
 
-       return (
-              ride.headingFrom,
-              ride.headingTo,
-              ride.rideDate,
-              ride.rideTime,
-              ride.rideAmt,
-              ride.passengerLimit;
-              ride.numPassenger,
-              ride.vehicleType,
-              ride.rideLock,
-              ride.isRideOpen,
-              ride.isRideCompleted
-         );
+        //Transfer money to driver
+        _ride.driver.transfer(_ride.pricePerSeat);
+        //Decrement available seats
+        _ride.availableSeats--;
+        
+
+        emit RideRequested(
+            _ride.rideId,
+            _ride.driver,
+            _ride.origin,
+            _ride.destination,
+            _ride.departureDate,
+            _ride.departureTime,
+            _ride.seatLimit,
+            _ride.availableSeats,
+            _ride.pricePerSeat
+        );
+
     }
+
+    // function getRide()
+    //     public
+    //     view
+    //     returns (
+    //         uint,
+    //         address,
+    //         string memory,
+    //         string memory,
+    //         string memory,
+    //         uint256,
+    //         uint256,
+    //         uint256,
+    //         uint256
+    //     )
+    // {
+    //     Ride memory ride = rides[_index - 1];
+    //     return (
+    //         ride.rideId,
+    //         ride.driver,
+    //         ride.origin,
+    //         ride.destination,
+    //         ride.departureDate,
+    //         ride.departureTime,
+    //         ride.seatLimit,
+    //         ride.availableSeats,
+    //         ride.pricePerSeat
+    //     );
+    // }
+
+    // function bookSeat(uint256 _index) public payable {
+    //     Ride storage ride = rides[_index];
+    //     require(ride.availableSeats > 0, "No available seats");
+    //     require(msg.value == ride.pricePerSeat, "Invalid price");
+    //     ride.availableSeats--;
+    //     ride.driver.transfer(msg.value);
+    // }
 }
