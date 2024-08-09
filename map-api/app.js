@@ -18,9 +18,9 @@ const io = new Server(server, {
 
 // const clients = {}
 
-const users = {}
+let users = {}
 
-const riders = {}
+// const riders = {}
 
 io.on('connection', (socket) => {
     // socket.on('send-location', (data) => {
@@ -34,20 +34,30 @@ io.on('connection', (socket) => {
     //     io.emit('location-update', clients)
     // })
     console.log("New client connected:", socket.id);
-    socket.on('update-user-location', ({userId, location}) => {
+    socket.on('update-user-location', ({userId, currentLocation, fromLocation, toLocation}) => {
         // clients[userId] = location
         // const {userId, location} = data
-        users[userId] = location
-        console.log("Location updated:", users);
-        io.emit("location-update", { users, riders });
-    })
-    socket.on('update-rider-location', ({riderId, location}) => {
+
         
-        // const {riderId, location} = data
-        riders[riderId] = location
-        console.log("Location updated:", riders);
-        io.emit("location-update", { users, riders });
+
+        users[userId] = {currentLocation, fromLocation, toLocation}
+        console.log("Location updated:", users);
+        console.log("Received location update for user:", userId);
+        console.log("Current Location:", currentLocation);
+        console.log("From Location:", fromLocation);
+        console.log("To Location:", toLocation);
+        io.emit("location-update", { users });
+
+        // setTimeout(() => {
+        //   users[userId] = {
+        //     currentLocation,
+        //     fromLocation,
+        //     toLocation,
+        //   };
+        //   io.emit("locationUpdate", { users });
+        // }, 100);
     })
+    
    
     // socket.on('assign-rider', ({userId, riderId}) => {
     //     assignRiders[userId] = riderId
@@ -78,17 +88,26 @@ io.on('connection', (socket) => {
 
     //     io.emit('location-update', clients)
     // })
+    // socket.on('disconnect', () => {
+    //     console.log("client disconnected:", socket.id);
+
+    //     delete users[socket.id]
+    //     delete riders[socket.id]
+           
+        
+
+    //     // delete clients[socket.id]
+
+    //     io.emit('location-update', {users, riders})
+    // })
     socket.on('disconnect', () => {
         console.log("client disconnected:", socket.id);
 
         delete users[socket.id]
-        delete riders[socket.id]
-           
-        
 
         // delete clients[socket.id]
 
-        io.emit('location-update', {users, riders})
+        io.emit('location-update', {users})
     })
     
     

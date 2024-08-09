@@ -6,14 +6,17 @@ import leaflet, { marker } from "leaflet";
 import L from "leaflet";
 
 export default function Map() {
-  const socket = io("http://localhost:3000");
+  const socket = io("http://localhost:3000/map");
 
   const [locations, setLocation] = useState({ latitude: 0, longitude: 0 });
 
   const [userId, setUserId] = useState("user1");
-  const [assignedRiderId, setAssignedRiderId] = useState("rider1");
-  const [userLocation, setUserLocation] = useState(null)
-  const [riderLocation, setRiderLocation] = useState(null)
+  const [userLocation, setUserLocation] = useState({
+    currentLocation: null,
+    fromLocation: null,
+    toLocation: null
+  });
+  
 
   // if (navigator.geolocation) {
   //   navigator.geolocation.watchPosition(
@@ -69,12 +72,14 @@ export default function Map() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const location = {
+          const currentLocation = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           };
-          console.log("Emitting user location:", location);
-          socket.emit("update-user-location", { userId, location });
+          console.log("Emitting user location:", locations);
+          const fromLocation = { latitude: 51.505, longitude: -0.09 }; 
+          const toLocation = { latitude: 60.515, longitude: -0.1 };
+          socket.emit("update-user-location", { userId, currentLocation, fromLocation, toLocation });
         },
         (error) => {
           console.error("Error Obtaining location", error);
@@ -90,32 +95,42 @@ export default function Map() {
     socket.on("location-update", (data) => {
       console.log("Received updated locations:", data);
       
-      if(data.users && data.users[useId]){
-        console.log("user location", data.users[useId]);
+      // if(data.users && data.users[useId]){
+      //   console.log("user location", data.users[userId]);
         
-        setUserLocation(data.users[useId])
-      }
-      else {
-        console.log(`No location data for userid: ${userId}`);
-      }
+      //   setUserLocation(data.users[userId])
+      // }
+      // else {
+      //   console.log(`No location data for userid: ${userId}`);
+      // }
 
+      if (data.users && data.users[userId]) {
+        const locationData = data.users[userId];
 
-      if (data.riders && data.riders[assignedRiderId]) {
-        console.log("rider location", data.riders[assignedRiderId]);
-
-        setRiderLocation(data.riders[assignedRiderId]);
+        if (
+          locationData.currentLocation &&
+          locationData.currentLocation.latitude !== undefined &&
+          locationData.currentLocation.longitude !== undefined
+        ) {
+          console.log("Setting user location:", locationData);
+          setUserLocation(locationData);
+        } else {
+          console.log("Invalid location data:", locationData);
+        }
       } else {
-        console.log(`No location data for riderid: ${assignedRiderId}`);
+        console.log(`No location data for userId: ${userId}`);
       }
+
+      
     });
 
 
     
 
     return () => {
-      socket.off("disconnect");
+      socket.off("location-update");
     };
-  }, [userId, assignedRiderId]);
+  }, [userId]);
 
   // useEffect(() => {
 
@@ -247,7 +262,7 @@ export default function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {userLocation &&
+        {/* {userLocation &&
           userLocation.latitude !== undefined &&
           userLocation.longitude !== undefined && (
             <Marker
@@ -258,19 +273,39 @@ export default function Map() {
                 <h5>You are here</h5>
               </Popup>
             </Marker>
+          )} */}
+
+        {userLocation && userLocation.currentLocation && (
+          <Marker
+            position={[
+              userLocation.currentLocation.latitude,
+              userLocation.currentLocation.longitude,
+            ]}
+          >
+            <Popup>Current Location</Popup>
+          </Marker>
         )}
-        {riderLocation &&
-          riderLocation.latitude !== undefined &&
-          riderLocation.longitude !== undefined && (
-            <Marker
-              key={assignedRiderId}
-              position={[riderLocation.latitude, riderLocation.longitude]}
-            >
-              <Popup>
-                <h5>You are here</h5>
-              </Popup>
-            </Marker>
-          )}
+
+        {userLocation && userLocation.fromLocation && (
+          <Marker
+            position={[
+              userLocation.fromLocation.latitude,
+              userLocation.fromLocation.longitude,
+            ]}
+          >
+            <Popup>From Location</Popup>
+          </Marker>
+        )}
+        {userLocation && userLocation.toLocation && (
+          <Marker
+            position={[
+              userLocation.toLocation.latitude,
+              userLocation.toLocation.longitude,
+            ]}
+          >
+            <Popup>To Location</Popup>
+          </Marker>
+        )}
 
         {/* {location.latitude && location.longitude && (
           <Marker position={[location.latitude, location.longitude]}>
