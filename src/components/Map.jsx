@@ -6,7 +6,7 @@ import leaflet, { marker } from "leaflet";
 import L from "leaflet";
 
 export default function Map() {
-  const socket = io('http://localhost:3000');
+  const socket = io("http://localhost:3000");
 
   const [locations, setLocation] = useState({ latitude: 0, longitude: 0 });
 
@@ -14,9 +14,8 @@ export default function Map() {
   const [userLocation, setUserLocation] = useState({
     currentLocation: null,
     fromLocation: null,
-    toLocation: null
+    toLocation: null,
   });
-  
 
   // if (navigator.geolocation) {
   //   navigator.geolocation.watchPosition(
@@ -67,6 +66,7 @@ export default function Map() {
   //   return () => {
   //     socket.off('disconnect');
   //   }
+  // 1
   // }, [])
   useEffect(() => {
     if (navigator.geolocation) {
@@ -77,9 +77,14 @@ export default function Map() {
             longitude: position.coords.longitude,
           };
           console.log("Emitting user location:", locations);
-          const fromLocation = { latitude: 51.505, longitude: -0.09 }; 
+          const fromLocation = { latitude: 51.505, longitude: -0.09 };
           const toLocation = { latitude: 60.515, longitude: -0.1 };
-          socket.emit("update-user-location", { userId, currentLocation, fromLocation, toLocation });
+          socket.emit("update-user-location", {
+            userId,
+            currentLocation,
+            fromLocation,
+            toLocation,
+          });
         },
         (error) => {
           console.error("Error Obtaining location", error);
@@ -94,10 +99,10 @@ export default function Map() {
 
     socket.on("location-update", (data) => {
       console.log("Received updated locations:", data);
-      
+
       // if(data.users && data.users[useId]){
       //   console.log("user location", data.users[userId]);
-        
+
       //   setUserLocation(data.users[userId])
       // }
       // else {
@@ -120,12 +125,7 @@ export default function Map() {
       } else {
         console.log(`No location data for userId: ${userId}`);
       }
-
-      
     });
-
-
-    
 
     return () => {
       socket.off("location-update");
@@ -185,10 +185,6 @@ export default function Map() {
   //     }
   //   });
   // }, [location, location.latitude, location.longitude]);
-
-  
-
-
 
   // return (
   //   <>

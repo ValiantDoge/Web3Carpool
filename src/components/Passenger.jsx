@@ -1,7 +1,7 @@
 import React from 'react'
 import { BsArrowUpRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-
+// 1
 const Passenger = () => {
     return (
         <div className='w-full flex flex-col  min-h-screen  '>

@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 const app = express();
 app.use(cors());
 const port = 3000;
-
+// 1
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
