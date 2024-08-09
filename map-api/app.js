@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
     
 })
 
-app.get("/", (req, res) => {
+app.get("/m", (req, res) => {
     res.send("Hello World!");
 
 });
