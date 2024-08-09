@@ -8,10 +8,10 @@ const Dreiver = () => {
             <div className='w-full p-2 flex justify-between items-center '>
                 <h1 className=' capitalize text-[2rem] p-2 font-bold text-blue-500'>carPooling - Dreiver Panel </h1>
 
-                <div className=' flex gap-6 p-2'>
+                {/* <div className=' flex gap-6 p-2'>
                     <button className='px-4 py-2 bg-blue-500 text-white rounded-md text-[14px] '><Link to={''}>Switch Account</Link></button>
                     <button className='px-4 py-2 bg-blue-500 text-white rounded-md text-[14px]'><Link to={''}>Logout</Link></button>
-                </div>
+                </div> */}
             </div>
 
             <div className='grid grid-cols-10  mt-6 '>

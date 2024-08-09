@@ -6,14 +6,14 @@ import Profile from "./components/Profile"
 import Dreiver from "./components/Dreiver"
 import Passenger from "./components/Passenger"
 import PublishRide from "./components/PublishRide"
+import Navbar from "./components/Navbar"
 
 function App() {
-
 
   const Layout = () => {
     return (
       <div className=" md:w-9/12 mx-auto "> 
-        {/* thsi is outlet  */}
+      <Navbar/>
         <Outlet />
       </div>
     )

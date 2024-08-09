@@ -9,12 +9,8 @@ const SignIn = () => {
     }
     return (
         <>
-
-            <div className='flex justify-center gap-3 mt-12 w-full h-screen items-center relative bodybg '>
-                 <div className='absolute top-0'>
-                    <img src="../public/car-sharing.png"  alt=""  /> 
-                </div> 
-                <form onSubmit={handleSubmit} className=' w-[90vw]  md:w-5/12 flex flex-col gap-8 p-4 shadow-md glass  '>
+            <div className=' flex justify-center gap-3 w-full items-center h-[80vh]  '>
+                <form onSubmit={handleSubmit} className=' w-[90vw]   md:w-5/12 flex flex-col gap-8 p-4 shadow-md glass  '>
                     <h2 className='font-bold text-3xl text-blue-500'>Sign In as Driver</h2>
 
                     <div className='w-full flex flex-col gap-2 '>
