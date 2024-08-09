@@ -6,6 +6,7 @@ import Profile from "./components/Profile"
 import Dreiver from "./components/Dreiver"
 import Passenger from "./components/Passenger"
 import PublishRide from "./components/PublishRide"
+import Map from "./components/Map"
 
 function App() {
 
@@ -56,6 +57,10 @@ function App() {
         {
           path:'/publishride',
           element:<PublishRide/>
+        },
+        {
+          path: '/map',
+          element: <Map />
         }
   
       ]

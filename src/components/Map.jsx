@@ -6,7 +6,7 @@ import leaflet, { marker } from "leaflet";
 import L from "leaflet";
 
 export default function Map() {
-  const socket = io("http://localhost:3000/map");
+  const socket = io('http://localhost:3000/map');
 
   const [locations, setLocation] = useState({ latitude: 0, longitude: 0 });
 

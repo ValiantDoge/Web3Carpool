@@ -10,7 +10,7 @@ const port = 3000;
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'http://localhost:5173/map',
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type']
     }
@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
     
 })
 
-app.get("/", (req, res) => {
+app.get("/m", (req, res) => {
     res.send("Hello World!");
 
 });
