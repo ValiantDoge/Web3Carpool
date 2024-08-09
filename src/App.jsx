@@ -3,7 +3,59 @@ import carLogo from '../public/car-sharing.png'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+
+  const Layout = () => {
+    return (
+      <div className=" md:w-9/12 mx-auto "> 
+        {/* thsi is outlet  */}
+        <Outlet />
+      </div>
+    )
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      errorElement:<Error/>,
+      element: <Layout />,
+      children: [
+        {
+          path: '/',
+          element: <Home />
+        },
+        {
+          path: '/login',
+          element: <SignIn />
+        },
+        {
+          path: '/register',
+          element: <SignUp />
+        },
+        {
+          path: '/profile/:id',
+          element: <Profile />
+        },
+        {
+          path: '/logout',
+          element: <SignIn />
+        },
+        {
+          path:'/dreiver',
+          element:<Dreiver/>
+        },
+        {
+          path:'/passenger',
+          element:<Passenger/>
+        },
+        {
+          path:'/publishride',
+          element:<PublishRide/>
+        }
+  
+      ]
+    }
+  ])
 
   return (
     <>
