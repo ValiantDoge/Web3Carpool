@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      '/socket.io': {
-        target: 'http://localhost:3000',
+      '/socket.io/map': {
+        target: 'http://localhost:3000/map',
         changeOrigin: true,
         ws: true
       }
