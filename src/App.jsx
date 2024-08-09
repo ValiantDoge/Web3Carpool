@@ -12,7 +12,8 @@ function App() {
 
   const Layout = () => {
     return (
-      <div className=" md:w-9/12 mx-auto ">
+      <div className=" md:w-9/12 mx-auto "> 
+        {/* thsi is outlet  */}
         <Outlet />
       </div>
     )
