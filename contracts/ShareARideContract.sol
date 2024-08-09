@@ -95,8 +95,6 @@ contract ShareARideContract {
         require(_ride.availableSeats > 0, "No available seats");
         //Check if user is not the driver
         require(msg.sender != _ride.driver, "You are the driver");
-        //Check if user has enough funds
-        require(msg.value >= _ride.pricePerSeat, "No enough funds");
 
         //Transfer money to driver
         _ride.driver.transfer(_ride.pricePerSeat);
