@@ -55,11 +55,36 @@ contract('ShareARideContract', (accounts) => {
         });
 
         it('requests ride', async () => {
-            res = await shareARideContract.requestRide(rideCount, { from: accounts[1], value: web3.utils.toWei('2', 'Ether') });
+
+            let oldDriverBalance = await web3.eth.getBalance(accounts[0]);
+            oldDriverBalance = new web3.utils.BN(oldDriverBalance);
+            const ride = await shareARideContract.rides(rideCount);
+
+            res = await shareARideContract.requestRide(rideCount, { from: accounts[1], value: ride.pricePerSeat });
             
-            const event = result.logs[0].args;
+            const event = res.logs[0].args;
             assert.equal(event.availableSeats.toNumber(), 2, 'seats is correct');
+
+            let newDriverBalance = await web3.eth.getBalance(accounts[0]);
+            newDriverBalance = new web3.utils.BN(newDriverBalance);
+
+            let pricePerSeat = new web3.utils.BN(ride.pricePerSeat);
+
+            const expectedBalance = oldDriverBalance.add(pricePerSeat);
+            assert.equal(newDriverBalance.toString(), expectedBalance.toString(), 'driver balance is correct');
+
+            // Invalid ride id
+            try {
+                await shareARideContract.requestRide(99, { from: accounts[1], value: ride.pricePerSeat });
+                assert.fail();
+            } catch (error) {
+                assert(error.message.includes('revert'), error.message);
+            }
+
         });
+
+
+
 
         
     });
