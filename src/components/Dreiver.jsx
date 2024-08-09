@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { BsArrowUpRight } from 'react-icons/bs';
+
 // 1
-const Dreiver = () => {
+const Dreiver = ({driverAccount}) => {    
+
     return (
         <div className='w-full flex flex-col  min-h-screen '>
             <div className='w-full p-2 flex justify-between items-center '>
@@ -18,11 +20,11 @@ const Dreiver = () => {
                 <div className=' p-2 m-4 mt-4 bg-blue-50 rounded-md shadow-md  md:col-span-6 glass'>
                     <h2 className=' capitalize text-[2rem] p-2 font-semibold'>Welcome User </h2>
                     <div className=' p-2 flex items-center'>
-                        <span className='font-bold'>Account ID</span> : djjjdjjdjjdjjdjjjdjjdjjjdjjdjjjdjdj
+                        <span className='font-bold'>Account ID</span> : {driverAccount.address}
                     </div>
 
                     <div className=' p-2 flex items-center'>
-                        <span className='font-bold'>Account Balance</span> : 78.80080808800808008
+                        <span className='font-bold'>Account Balance</span> : {driverAccount.balance} ETH
                     </div>
                 </div>
 
