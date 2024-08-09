@@ -35,12 +35,14 @@ const SignIn = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <button
-              type="submit"
-              className="px-4 py-2 border-none rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-400"
-            >
-              Sign In{" "}
-            </button>
+          <Link to="/rides-listing" className="px-4 py-2 border-none rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-400">
+              <button
+                type="submit"
+                
+              >
+                Sign In
+              </button>
+            </Link>
             <p>
               New user?
               <Link to="/register" className="ml-3 text-blue-500">
@@ -70,12 +72,14 @@ const SignIn = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <button
-              type="submit"
-              className="px-4 py-2 border-none rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-400"
-            >
-              Sign In
-            </button>
+            <Link to="/rides-listing" className="px-4 py-2 border-none rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-400">
+              <button
+                type="submit"
+                
+              >
+                Sign In
+              </button>
+            </Link>
             <p>
               New user?
               <Link to="/register" className="ml-3 text-blue-500">

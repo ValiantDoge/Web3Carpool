@@ -10,6 +10,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Profile from "./components/Profile";
 import Dreiver from "./components/Dreiver";
+import RideList from "./components/RideList";
 import Passenger from "./components/Passenger";
 import PublishRide from "./components/PublishRide";
 import Map from "./components/Map";
@@ -61,8 +62,8 @@ function App() {
       const networkData = ShareARideContract.networks[networkId];
 
       if (networkData) {
-        const Carpooling = new web3.eth.Contract(ShareARideContract.abi, networkData.address);
-        setCarpooling(Carpooling);
+        const contract = new web3.eth.Contract(ShareARideContract.abi, networkData.address);
+        setCarpooling(contract);
         setLoading(false);
       }else{
         window.alert('Carpooling contract not deployed to detected network.');
@@ -98,6 +99,10 @@ function App() {
           element: <Home />,
         },
         {
+          path: "/rides-listing",
+          element: <RideList carpool={carpooling} />,
+        },
+        {
           path: "/login",
           element: <SignIn />,
         },
@@ -123,7 +128,7 @@ function App() {
         },
         {
           path: "/publishride",
-          element: <PublishRide />,
+          element: <PublishRide driverAccount={accountDetails} carpool={carpooling} />,
         },
         {
           path: "/map",
@@ -135,7 +140,10 @@ function App() {
   // 1
   return (
     <>
-      <RouterProvider router={router}></RouterProvider>
+    {loading ? (<div>Loading...</div>) : (<RouterProvider router={router}></RouterProvider>)
+    
+    }
+      
     </>
   )
 }
