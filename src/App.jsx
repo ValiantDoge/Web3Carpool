@@ -1,6 +1,11 @@
-import { useState } from 'react'
-import carLogo from '../public/car-sharing.png'
-import './App.css'
+import { createBrowserRouter, RouterProvider, Route, Link, Outlet } from "react-router-dom"
+import Home from "./components/Home"
+import SignIn from "./components/SignIn"
+import SignUp from "./components/SignUp"
+import Profile from "./components/Profile"
+import Dreiver from "./components/Dreiver"
+import Passenger from "./components/Passenger"
+import PublishRide from "./components/PublishRide"
 
 function App() {
 
@@ -59,20 +64,8 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="#" target="_blank">
-          <img src={carLogo} className="logo" alt="Car logo" />
-        </a>
-        
-      </div>
-      <h1>Carpooling application on the Blockchain</h1>
-      <div className="card">
-        <h1 className="text-3xl font-bold underline text-red-700">
-          Hello world!
-        </h1>
-       
-      </div>
-     
+        <RouterProvider router={router} >
+        </RouterProvider>
     </>
   )
 }
